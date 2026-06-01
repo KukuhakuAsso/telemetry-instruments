@@ -15,7 +15,6 @@ export default defineConfig({
         },
     },
     build: {
-        // 输出到 Jekyll 的 assets/vue-telemetry 下
         outDir: "./output",
         emptyOutDir: true,
     },
