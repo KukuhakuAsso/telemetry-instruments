@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
 
     // .env.development.local 覆盖 .env.development 的同名变量（优先级更高，已 gitignore）
     const scfTarget = env.API_SCF_TARGET;
-    const scfRewrite = env.API_SCF_REWRITE === "true";
+    const scfRewriteTo = env.API_SCF_REWRITE_TO;
 
     // 代理前缀来自 projects.json，目标地址来自环境变量
     const proxy = {};
@@ -43,9 +43,12 @@ export default defineConfig(({ mode }) => {
         proxy[prefix] = {
             target: scfTarget,
             changeOrigin: true,
-            ...(scfRewrite && {
+            ...(scfRewriteTo !== undefined && {
                 rewrite: (p) =>
-                    p.replace(new RegExp(`^${escapeRegExp(prefix)}`), ""),
+                    p.replace(
+                        new RegExp(`^${escapeRegExp(prefix)}`),
+                        scfRewriteTo,
+                    ),
             }),
         };
     }
